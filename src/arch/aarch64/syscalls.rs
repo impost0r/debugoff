@@ -7,6 +7,6 @@
 
 #[allow(non_camel_case_types)]
 pub enum SysNo {
-    SYS_PTRACE = 117,
-    SYS_EXIT_GROUP = 94,
+    SYS_PTRACE = 26,
+    SYS_EXIT_GROUP = 1,
 }

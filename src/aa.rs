@@ -166,12 +166,12 @@ fn ptraceme() -> Result<(), crate::DebugOffErr> {
 ///
 /// ```rust
 /// // Import only on Linux and for "release builds"
-/// #[cfg(target_os = "linux")]
+/// #[cfg(target_os = "macos")]
 /// #[cfg(not(debug_assertions))]
 /// use debugoff;
 ///
 /// // Call only on Linux and for "release" builds.
-/// #[cfg(target_os = "linux")]
+/// #[cfg(target_os = "macos")]
 /// #[cfg(not(debug_assertions))]
 /// debugoff::ptraceme_or_die();
 /// ```
@@ -244,12 +244,12 @@ pub fn ptraceme_or_die() {
 ///
 /// ```rust
 /// // Import only on Linux and for "release builds"
-/// #[cfg(target_os = "linux")]
+/// #[cfg(target_os = "macos")]
 /// #[cfg(not(debug_assertions))]
 /// use debugoff;
 ///
 /// // Call only on Linux and for "release" builds.
-/// #[cfg(target_os = "linux")]
+/// #[cfg(target_os = "macos")]
 /// #[cfg(not(debug_assertions))]
 /// debugoff::multi_ptraceme_or_die();
 /// ```
@@ -416,18 +416,18 @@ impl Rand {
         self.w
     }
 }
-
-#[cfg(target_os = "linux")]
+#[cfg(target_os = "macos")]
 #[cfg(test)]
 mod test {
 
     use std::thread;
     use std::time::Duration;
+    use crate::ptraceme_or_die;
 
     #[test]
     fn multiple_ptraceme_or_die() {
         for i in 0..10 {
-            super::Aa::ptraceme_or_die();
+            ptraceme_or_die();
             println!("{}", i);
         }
 
@@ -443,10 +443,10 @@ mod test {
         let threads: Vec<_> = (0..10)
             .map(|i| {
                 thread::spawn(move || {
-                    super::Aa::ptraceme_or_die();
+                    ptraceme_or_die();
                     thread::sleep(Duration::from_millis(i * 10));
                     println!("Thread #{}", i);
-                    super::Aa::ptraceme_or_die();
+                    ptraceme_or_die();
                     super::AA.with(|f| {
                         assert_eq!(2, f.borrow().ptrace_state.traceme_ctr);
                     });
